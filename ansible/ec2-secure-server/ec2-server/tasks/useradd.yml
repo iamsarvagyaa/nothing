@@ -1,0 +1,22 @@
+- name: Setup passwordless sudo for new user
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Create a new user with supriv
+  user:
+    name: "{{ new_user }}"
+    state: present
+    groups: sudo
+    append: true
+    create_home: true
+    shell: "/bin/bash"
+
+- name: Set ssh key for user
+  ansible.posix.authorized_key:
+    user: "{{ new_user }}"
+    state: present
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"

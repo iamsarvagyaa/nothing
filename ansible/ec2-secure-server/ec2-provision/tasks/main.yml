@@ -1,0 +1,6 @@
+---
+# Author: Sarvagya Sagar
+- name: Create EC2 instance
+  block:
+    - import_tasks: instance.yml
+    - meta: refresh_inventory

@@ -1,0 +1,29 @@
+- name: Install Aptitude & Upgrade Packages
+  apt:
+    name: aptitude
+    state: latest
+    update_cache: true
+
+- name: Update & install essential packages
+  apt:
+    pkg:
+      - acl
+      - curl
+      - vim
+      - git
+      - gcc
+      - make
+      - tmux
+    state: latest
+    update_cache: true
+
+- block:
+  - name: Copy Installation Script to Remote host
+    copy: src=installation.bash dest=$HOME
+  - name: Install security tools
+    ansible.builtin.shell:
+      cmd: |
+        bash installation.bash
+      chdir: "{{ ch_dir }}"
+  become: true
+  become_user: "{{ new_user }}"

@@ -1,0 +1,4 @@
+---
+# always use vaults to store any secrets or variables
+ch_dir: # string: (/home/hello, /home/manav ... etc)
+new_user: # string: (hello/manav ... etc)

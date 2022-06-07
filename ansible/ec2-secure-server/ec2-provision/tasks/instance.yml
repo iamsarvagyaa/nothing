@@ -1,0 +1,52 @@
+---
+# Author: Sarvagya Sagar
+# Provisioning the ec2 instance
+# For more details: https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_instance_module.html
+
+- name: Provisioning the ec2 Instance
+  amazon.aws.ec2_instance:
+    # Variables
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    detailed_monitoring: "{{ detailed_monitoring | default(omit) }}"
+    instance_type: "{{ instance_type }}"
+    region: "{{ region }}"
+    image_id: "{{ image }}"
+    vpc_subnet_id: "{{ vpc_subnet_id }}"
+    security_group: "{{ security_group }}"
+    network:
+      assign_public_ip: "{{ assign_public_ip }}"
+      delete_on_termination: "{{ net_delete_on_termination | default(omit) }}"
+    termination_protection: "{{ termination_protection | default(omit) }}"
+    exact_count: "{{ exact_count }}"
+    key_name: "{{ ssh_key_name }}"
+    wait: "{{ wait | default(omit) }}"
+    tenancy: "{{ tenancy }}"
+    state: "{{ current_state }}"
+    volumes:
+      - device_name: "{{ vol_drive_name }}"
+        ebs:
+          volume_size: "{{ vol_size }}"
+          kms_key_id: "{{ vol_kms_id }}"
+          volume_type: "{{ vol_type }}"
+          delete_on_termination: "{{ vol_delete_on_termination | default(omit) }}"
+          encrypted: "{{ vol_encrypted }}"
+    # Counts
+    name: "{{ instance_name }}"
+    tags:
+      name: "{{ instance_tag | default(omit) }}"
+  register: ec2
+
+- name: Pause for 30 sec, to replicate the Addresses
+  pause:
+    seconds: 30
+
+- name: Debug actions of aws instances
+  debug: var=ec2
+
+- name: Add the Public IP Address of created instances to inventory
+  local_action: lineinfile 
+                path="inventory/hosts"
+                regexp={{ item.public_ip_address }} 
+                insertafter="[instances]" line="{{ item.public_ip_address }} ansible_user=admin ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_ssh_extra_args='-o StrictHostKeyChecking=no'"
+  with_items: "{{ ec2.instances }}"

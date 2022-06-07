@@ -1,0 +1,18 @@
+---
+# Author: Sarvagya Sagar
+# Playbook to create a debian based instance based on roles :)
+
+# For more details: https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_instance_module.html
+
+- name: Initiate the role
+  hosts: local
+  gather_facts: false
+  roles:
+    - role: ec2-provision
+
+- name: Install & Setup in provisioned instances
+  hosts: instances
+  become: true
+  gather_facts: true
+  roles:
+    - role: ec2-server

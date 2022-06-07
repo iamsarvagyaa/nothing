@@ -1,0 +1,6 @@
+---
+# tasks file for ec2-server
+- name: Setup Provisioned Servers
+  block:
+    - import_tasks: useradd.yml
+    - import_tasks: apt.yml
