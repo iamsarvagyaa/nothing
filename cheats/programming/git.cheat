@@ -1,0 +1,34 @@
+% git
+
+# Initialize a git repository
+git init
+
+# Set global git user.name
+git config --global user.name "Sarvagya Sagar"
+
+# Set global git user.email
+git config --global user.email "iamsarvagyaa@gmail.com"
+
+% git clone
+@ git
+
+# Clone a git repository
+git clone <repository> <directory>
+
+# Clone a specific branch of git repository
+git clone -b <branch_name> <repository> <directory>
+
+# Shallow clone with all branches and submodules
+git clone --depth=1 --no-single-branch --recurse-submodule <repository> <directory>
+
+# Clone a specific folder from a git repository
+git clone --depth=1 --filter=blob:none --sparse <repository-url> <directory> ; cd <directory> ; git sparse-checkout set <git-folder>
+
+% git remote
+@ git
+
+# Show all remote in a git repository
+git remote --verbose
+
+# Add remote for a git repository
+git remote add origin <remote_url>
