@@ -7,6 +7,6 @@ brew update
 brew upgrade
 
 # Info of a package
-brew info <package_name>
+brew info <package>
 
-$ package_name: brew search
+$ package: brew search
