@@ -1,0 +1,12 @@
+% ipfs
+
+# Initialize the configuration files
+ipfs init
+
+% ipfs-update
+@ ipfs
+
+# Fresh install specific version of ipfs
+ipfs-update install <version>
+
+$ version: ipfs-update versions | grep -E "^v" | awk '{print $NF}'
