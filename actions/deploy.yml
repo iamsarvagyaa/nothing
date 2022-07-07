@@ -1,0 +1,116 @@
+name: ipfsDeploy
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - storage/blogData/**
+  repository_dispatch:
+    types: [deployment]
+  workflow_dispatch:
+    
+jobs:
+  deploy:
+    name: Deploy on IPFS
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout the repository
+        uses: actions/checkout@v2.3.3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install ruby v3.0.0
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.0
+          
+      - name: Install jekyll & bundler
+        run: |
+          gem install jekyll bundler
+        shell: bash
+          
+      - name: Install jekyll dependencies
+        run: |
+          bundle install
+        working-directory: ./rawBlog
+        shell: bash
+
+      - name: Install Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install ts-node
+        run: npm i -g ts-node@latest
+
+      - name: Build jekyll blog
+        run: |
+          jekyll build
+        working-directory: rawBlog/
+        shell: bash
+
+      - name: Move _site folder to storage
+        run: |
+          mv rawBlog/_site storage/buildData
+        shell: bash
+      
+      - name: Prepare dependencies
+        run: yarn install
+        working-directory: storage/
+    
+      - name: Upload on IPFS
+        run: |
+          IPFSUP="$(yarn web3-storage-upload | awk -F 'cid: ' '{print $2}' | uniq)"
+          echo "CID=$(echo $IPFSUP)" >> $GITHUB_ENV
+        env:
+          WEB3_STORAGE_TOKEN: ${{ secrets.IPFS_TOKEN }}
+        shell: bash
+        working-directory: storage/
+      
+      - name: Check CID env
+        run: echo ${{ env.CID }}
+        shell: bash
+        
+      - name: List hostname from cloudflare
+        run: |
+          CFLARE_HOST="$(curl -sL -X GET 'https://api.cloudflare.com/client/v4/zones/${{ secrets.CFLARE_ZONE }}/web3/hostnames' -H 'X-Auth-Email: ${{ secrets.GH_EMAIL }}' -H 'X-Auth-Key: ${{ secrets.CFLARE_KEY }}' -H 'Content-Type: application/json' | jq -r '.result[0].id')"
+          echo "CFLARE_HOST=$(echo $CFLARE_HOST)" >> $GITHUB_ENV
+        shell: bash
+        
+      - name: Check CFLARE_HOST env
+        run: echo ${{ env.CFLARE_HOST }}
+        
+      - name: Manipulate cloudflare gateway
+        run: |
+          curl -sL -X PATCH "https://api.cloudflare.com/client/v4/zones/${{ secrets.CFLARE_ZONE }}/web3/hostnames/${{ env.CFLARE_HOST }}" -H "X-Auth-Email: ${{ secrets.GH_EMAIL }}" -H "X-Auth-Key: ${{ secrets.CFLARE_KEY }}" -H "Content-Type: application/json" --data '{"description":"IPFS gateway.","dnslink":"/ipfs/${{ env.CID }}"}'
+        shell: bash
+
+      - name: Push changes to github
+        run: |
+          git config --global user.name "${{ env.COMMIT_AUTHOR }}"
+          git config --global user.email "${{ secrets.GH_EMAIL }}"
+          git add -A
+          git commit -a -m "${{ env.COMMIT_MESSAGE }}"
+          git push
+        env:
+          COMMIT_AUTHOR: "Sarvagya Sagar"
+          COMMIT_MESSAGE: "updates: pushed recently build _site folder"
+        shell: bash
+
+  run_if_failure:
+    if: ${{ !github.event.client_payload.passed }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          MESSAGE: ${{ github.event.client_payload.message }}
+        run: echo $MESSAGE
