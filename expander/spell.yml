@@ -1,0 +1,9 @@
+matches:
+  - triggers: ["othr", "othre"]
+    replace: "other"
+    word: true
+    propagate_case: true
+
+  - triggers: ["mantlenode", "mantlnode", "mntlnode"]
+    replace: "mantleNode"
+

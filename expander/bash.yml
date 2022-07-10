@@ -1,0 +1,10 @@
+# espanso matches for bash
+# below are available lists are:
+
+# shebang trigger
+
+matches:
+
+# shebang trigger
+  - trigger: ";bash"
+    replace: "#!/usr/bin/bash"

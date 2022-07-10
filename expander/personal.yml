@@ -1,0 +1,31 @@
+matches:
+
+  - trigger: ";pmail"
+    replace: "iamsarvagyaa@gmail.com"
+
+  - trigger: ";amail"
+    replace: "sarvagya@assetmantle.one"
+
+  - trigger: ";me"
+    replace: "Sarvagya Sagar"
+
+  - trigger: ";assman"
+    replace: "AssetMantle"
+
+  - trigger: ";twitter"
+    replace: "https://twitter.com/iamsarvagyaa"
+
+  - trigger: ";github"
+    replace: "https://github.com/iamsarvagyaa"
+
+  - trigger: ";linkedin"
+    replace: "https://linkedin.com/in/iamsarvagyaa"
+
+  - trigger: ";instagram"
+    replace: "https://instagram.com/iamsarvagyaa"
+
+  - trigger: ";website"
+    replace: "https://sarvagya.me"
+
+  - trigger: ";sig"
+    replace: "Thanks,\nSarvagya"

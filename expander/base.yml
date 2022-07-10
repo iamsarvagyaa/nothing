@@ -1,0 +1,19 @@
+matches:
+  - trigger: ";espanso"
+    replace: "Hi there!"
+  
+  - trigger: ";date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%m/%d/%Y"
+
+  - trigger: ";now"
+    replace: "{{current_time}}"
+    vars:
+      - name: current_time
+        type: date
+        params:
+          format: "%H:%M"
