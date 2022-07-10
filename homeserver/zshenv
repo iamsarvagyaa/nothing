@@ -1,0 +1,24 @@
+# Exported Variables
+
+export ZSHDIR="$HOME/.zsh"
+export LANG=en_US.UTF-8
+export TERM=xterm-256color
+export EDITOR=vim
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+export GPG_TTY=$(tty)
+# Global Variables
+export GEM_HOME="$HOME/.gem"
+export RUSTUP_HOME="$HOME/.rustup"
+export CARGO_HOME="$HOME/.cargo"
+export GOROOT="/usr/local/go"
+export GOPATH="$HOME/.go"
+
+# Solution for tmux path-env-dups
+if [[ -z $TMUX ]]; then
+  PATH="${PATH:+${PATH}:}$HOME/.local/bin"
+  PATH="${PATH:+${PATH}:}$GOPATH/bin"
+  PATH="${PATH:+${PATH}:}$GOROOT/bin"
+  PATH="${PATH:+${PATH}:}$GEM_HOME/bin"
+  PATH="${PATH:+${PATH}:}$CARGO_HOME/bin"
+fi
+

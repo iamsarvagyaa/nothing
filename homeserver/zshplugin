@@ -1,0 +1,9 @@
+# ZSH Plugins
+ 
+if _plugin zsh-syntax-highlighting
+then
+    ZSH_HIGHLIGHT_STYLES[path]=none
+    ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+fi
+ 
+_plugin zsh-autosuggestions && ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#4e4e4e'

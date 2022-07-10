@@ -1,0 +1,43 @@
+# zshrc
+
+autoload colors && colors
+
+# Sourcing files
+for i in $HOME/.zsh/src/*
+do
+   source "$i"
+done
+
+# Some ZSH tweaks
+setopt NO_HUP
+setopt NO_CHECK_JOBS
+setopt INTERACTIVE_COMMENTS
+setopt AUTO_CD
+setopt BEEP
+setopt NO_NO_MATCH
+setopt NOTIFY
+setopt NUMERIC_GLOB_SORT
+setopt PROMPT_SUBST
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+setopt HIST_BEEP
+setopt MAGIC_EQUAL_SUBST
+
+HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
+HISTFILE="$ZSHDIR/.cache/zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+ 
+# Auto completion
+autoload -Uz compinit && compinit -d $ZSHDIR/.cache/zcompdump
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+typeset -aU path
