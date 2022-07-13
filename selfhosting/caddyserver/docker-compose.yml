@@ -1,0 +1,23 @@
+version: "3"
+services:
+  caddy:
+    image: "caddycf:latest"
+    container_name: "caddyserver"
+    hostname: "caddyserver"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./Caddyfile:/etc/caddy/Caddyfile:ro"
+      - "./shared/data:/data"
+      - "./shared/config:/config"
+    environment:
+      - DOMAIN=${DOMAIN}
+      - CLOUDFLARE_API_TOKEN=${CF_TOKEN}
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
