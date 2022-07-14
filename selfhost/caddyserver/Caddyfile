@@ -1,0 +1,6 @@
+n8n.{$DOMAIN} {
+    reverse_proxy n8nio:5678
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+    }
+}

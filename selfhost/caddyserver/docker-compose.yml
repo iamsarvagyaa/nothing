@@ -14,7 +14,7 @@ services:
       - "./shared/config:/config"
     environment:
       - DOMAIN=${DOMAIN}
-      - CLOUDFLARE_API_TOKEN=${CF_TOKEN}
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
     networks:
       - proxy
 

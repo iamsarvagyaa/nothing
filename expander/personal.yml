@@ -12,8 +12,11 @@ matches:
   - trigger: ";assman"
     replace: "AssetMantle"
 
-  - trigger: ";twitter"
+  - trigger: ";ptwitter"
     replace: "https://twitter.com/iamsarvagyaa"
+
+  - trigger: ";atwitter"
+    replace: "https://twitter.com/AssetMantle"
 
   - trigger: ";github"
     replace: "https://github.com/iamsarvagyaa"
@@ -24,8 +27,14 @@ matches:
   - trigger: ";instagram"
     replace: "https://instagram.com/iamsarvagyaa"
 
-  - trigger: ";website"
+  - trigger: ";pwebsite"
     replace: "https://sarvagya.me"
 
   - trigger: ";sig"
-    replace: "Thanks,\nSarvagya"
+    replace: "---\nThanks,\nSarvagya"
+
+  - trigger: ";awallet"
+    replace: "https://wallet.assetmantle.one"
+  
+  - trigger: ";awebsite"
+    replace: "https://assetmantle.one"
